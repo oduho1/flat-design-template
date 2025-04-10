@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taruka - Let's Grow Together</title>
+    <style>
+        :root {
+            --primary: #0066cc;
+            --accent: #ff5733;
+            --dark: #222222;
+            --light: #ffffff;
+            --gray: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .page-title {
+            text-align: center;
+            color: var(--light);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--light);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .card {
+            background-color: var(--light);
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        .logo img {
+            width: 30px;
+            margin-right: 10px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            z-index: 2;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .sign-in {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            z-index: 2;
+        }
+
+        .sign-in:hover {
+            transform: translateY(-3px);
+            background-color: #0055b3;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-text p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards 0.5s;
+        }
+
+        .hero-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.5s;
+            filter: brightness(0.85) saturate(1.5);
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 87, 51, 0.6), transparent);
+            z-index: 1;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin: 1rem 0;
+        }
+
+        .phone {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .phone-icon {
+            background-color: var(--primary);
+            color: var(--light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+            margin: 1rem 0;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+
+        .dot:nth-child(2) {
+            opacity: 0.8;
+        }
+
+        .dot:nth-child(3) {
+            opacity: 0.6;
+        }
+
+        .dot:nth-child(4) {
+            opacity: 0.4;
+        }
+
+        .dot:nth-child(5) {
+            opacity: 0.2;
+        }
+
+        .pattern {
+            position: absolute;
+            z-index: 1;
+        }
+
+        .pattern-1 {
+            top: 20px;
+            right: 20px;
+            width: 120px;
+            height: 120px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        .pattern-2 {
+            bottom: 50px;
+            left: 50px;
+            width: 200px;
+            height: 100px;
+            opacity: 0.2;
+        }
+
+        .pattern-3 {
+            bottom: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            opacity: 0.1;
+        }
+
+        .plus-pattern {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 1rem 0;
+        }
+
+        .plus {
+            width: 15px;
+            height: 15px;
+            position: relative;
+        }
+
+        .plus::before,
+        .plus::after {
+            content: '';
+            position: absolute;
+            background-color: var(--primary);
+        }
+
+        .plus::before {
+            width: 100%;
+            height: 3px;
+            top: 6px;
+            left: 0;
+        }
+
+        .plus::after {
+            width: 3px;
+            height: 100%;
+            top: 0;
+            left: 6px;
+        }
+
+        .heading {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards 0.7s;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background-color: #0055b3;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            transform: translateY(-3px);
+            background-color: rgba(0, 102, 204, 0.1);
+        }
+
+        footer {
+            background-color: #003b82;
+            color: var(--light);
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        .footer-column p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #b3d1ff;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .social-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #b3d1ff;
+        }
+
+        .wave-divider {
+            height: 70px;
+            width: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25' fill='%23003b82'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5' fill='%23003b82'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23003b82'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            margin-top: 3rem;
+        }
+
+        .newsletter {
+            margin-top: 1.5rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            outline: none;
+        }
+
+        .newsletter-btn {
+            background-color: var(--accent);
+            color: var(--light);
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 50px 50px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #e64a2e;
+        }
+
+        /* Shimmer animation */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 3s infinite;
+            transform: skewX(-25deg);
+        }
+
+        /* Mobile menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: var(--dark);
+            transition: all 0.3s;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 200%;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Media Queries */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .heading {
+                font-size: 3rem;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--light);
+                flex-direction: column;
+                padding: 6rem 2rem 2rem;
+                transition: right 0.3s;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                z-index: 5;
+            }
+
+            .nav.active {
+                right: 0;
+            }
+
+            .header .sign-in {
+                display: none;
+            }
+
+            .nav .sign-in {
+                display: block;
+                margin-top: 2rem;
+                width: fit-content;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 1rem auto;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .heading {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="page-title">LANDING PAGE TEMPLATE</h1>
+            <p class="subtitle">Marketing</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="card shimmer">
+            <div class="pattern pattern-1"></div>
+            
+            <nav class="header">
+                <div class="logo">
+                    <img src="" alt="Taruka Logo">
+                    TARUKA
+                </div>
+                
+                <div class="menu-toggle" aria-label="Toggle menu" role="button" tabindex="0">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <div class="nav">
+                    <a href="#home" aria-current="page">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#location">Location</a>
+                    <a href="#contact">Contact</a>
+                    <button class="sign-in">SIGN IN</button>
+                </div>
+                
+                <button class="sign-in">SIGN IN</button>
+            </nav>
+            
+            <div class="hero">
+                <div class="hero-text">
+                    <div class="dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget lacus vel nunc fringilla.</p>
+                    
+                    <div class="plus-pattern">
+                        <div class="plus"></div>
+                        <div class="plus"></div>
+                        <div class="plus"></div>
+                        <div class="plus"></div>
+                        <div class="plus"></div>
+                        <div class="plus"></div>
+                        <div class="plus"></div>
+                        <div class="plus"></div>
+                        <div class="plus"></div>
+                    </div>
+                    
+                    <h2 class="heading">Let's Us Grow Together</h2>
+                    
+                    <div class="cta-buttons">
+                        <a href="#location" class="btn btn-primary">LOCATION</a>
+                        <a href="#join" class="btn btn-outline">JOIN US</a>
+                    </div>
+                </div>
+                
+                <div class="hero-image">
+                    <img src="/api/placeholder/600/400" alt="Professional working at a desk with an orange overlay effect">
+                    
+                    <div class="contact-info">
+                        <div class="phone">
+                            <div class="phone-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <span>954-894-2710</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <svg class="pattern pattern-2" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0,50 Q50,0 100,50 T200,50" fill="none" stroke="#0066cc" stroke-width="1"></path>
+                    <path d="M0,60 Q50,10 100,60 T200,60" fill="none" stroke="#0066cc" stroke-width="1"></path>
+                    <path d="M0,70 Q50,20 100,70 T200,70" fill="none" stroke="#0066cc" stroke-width="1"></path>
+                    <path d="M0,80 Q50,30 100,80 T200,80" fill="none" stroke="#0066cc" stroke-width="1"></path>
+                    <path d="M0,90 Q50,40 100,90 T200,90" fill="none" stroke="#0066cc" stroke-width="1"></path>
+                </svg>
+                
+                <svg class="pattern pattern-3" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#0066cc" stroke-width="1"></circle>
+                    <circle cx="100" cy="100" r="60" fill="none" stroke="#0066cc" stroke-width="1"></circle>
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="#0066cc" stroke-width="1"></circle>
+                    <circle cx="100" cy="100" r="20" fill="none" stroke="#0066cc" stroke-width="1"></circle>
+                </svg>
+            </div>
+        </section>
+    </main>
+
+    <!-- Features Section -->
+    <section class="container card shimmer" style="margin-top: 3rem;">
+        <h2 style="text-align: center; font-size: 2.5rem; margin: 2rem 0;">Our Features</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 2rem;">
+            <div style="text-align: center; padding: 1.5rem;">
+                <i class="fas fa-rocket" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="margin-bottom: 1rem;">Fast Growth</h3>
+                <p>Accelerate your business growth with our proven strategies and expert guidance.</p>
+            </div>
+            <div style="text-align: center; padding: 1.5rem;">
+                <i class="fas fa-chart-line" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="margin-bottom: 1rem;">Data Analytics</h3>
+                <p>Make informed decisions with our comprehensive data analysis tools.</p>
+            </div>
+            <div style="text-align: center; padding: 1.5rem;">
+                <i class="fas fa-users" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="margin-bottom: 1rem;">Team Support</h3>
+                <p>Get dedicated support from our experienced team of professionals.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="container card shimmer" style="margin-top: 3rem;">
+        <h2 style="text-align: center; font-size: 2.5rem; margin: 2rem 0;">What Our Clients Say</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 2rem;">
+            <div style="background: var(--gray); padding: 2rem; border-radius: 12px;">
+                <div style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-quote-left"></i>
+                </div>
+                <p style="margin-bottom: 1.5rem;">"Working with Taruka has been transformative for our business. Their innovative approach and dedication to results are unmatched."</p>
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); margin-right: 1rem;"></div>
+                    <div>
+                        <h4>oduho ohisa</h4>
+                        <p style="color: var(--primary);">CEO, Tech Solutions</p>
+                    </div>
+                </div>
+            </div>
+            <div style="background: var(--gray); padding: 2rem; border-radius: 12px;">
+                <div style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-quote-left"></i>
+                </div>
+                <p style="margin-bottom: 1.5rem;">"The team at Taruka helped us achieve our growth targets within months. Their expertise and support are invaluable."</p>
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); margin-right: 1rem;"></div>
+                    <div>
+                        <h4>ohisa</h4>
+                        <p style="color: var(--primary);">Marketing Director, Growth Co</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="container card shimmer" style="margin-top: 3rem;">
+        <h2 style="text-align: center; font-size: 2.5rem; margin: 2rem 0;">Pricing Plans</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 2rem;">
+            <div style="border: 2px solid var(--gray); border-radius: 12px; padding: 2rem; text-align: center;">
+                <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">Starter</h3>
+                <div style="font-size: 2.5rem; font-weight: bold; margin: 1.5rem 0;">
+                    $99<span style="font-size: 1rem; color: gray;">/month</span>
+                </div>
+                <ul style="list-style: none; margin: 2rem 0;">
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i>Basic Analytics</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i>5 Team Members</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i>Basic Support</li>
+                </ul>
+                <button class="btn btn-outline" style="width: 100%;">Get Started</button>
+            </div>
+            <div style="border: 2px solid var(--primary); border-radius: 12px; padding: 2rem; text-align: center; position: relative;">
+                <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Popular</div>
+                <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">Professional</h3>
+                <div style="font-size: 2.5rem; font-weight: bold; margin: 1.5rem 0;">
+                    $199<span style="font-size: 1rem; color: gray;">/month</span>
+                </div>
+                <ul style="list-style: none; margin: 2rem 0;">
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i>Advanced Analytics</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i>15 Team Members</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 0.5rem;"></i>Priority Support</li>
+                </ul>
+                <button class="btn btn-primary" style="width: 100%;">Get Started</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="wave-divider" role="presentation"></div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>About Taruka</h3>
+                <p>We are a dynamic team dedicated to helping businesses grow through innovative marketing strategies and cutting-edge technology solutions.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Services</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Portfolio</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Business Ave, Suite 500, Miami, FL</a></li>
+                    <li><a href="tel:9548942710"><i class="fas fa-phone-alt"></i> 954-894-2710</a></li>
+                    <li><a href="mailto:info@taruka.com"><i class="fas fa-envelope"></i> info@taruka.com</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Mon-Fri: 9:00 AM - 5:00 PM</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to receive the latest updates and exclusive offers.</p>
+                <div class="newsletter">
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email" aria-label="Email for newsletter">
+                        <button type="submit" class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 Taruka. All Rights Reserved. Designed with <i class="fas fa-heart"></i> for growth.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('.nav');
+            
+            menuToggle.addEventListener('click', function() {
+                nav.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            menuToggle.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    nav.classList.toggle('active');
+                    document.body.classList.toggle('menu-open');
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!nav.contains(e.target) && !menuToggle.contains(e.target) && nav.classList.contains('active')) {
+                    nav.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+            
+            // Accessibility - Close menu with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && nav.classList.contains('active')) {
+                    nav.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+            
+            // Shimmer animation on scroll
+            const addShimmerOnScroll = () => {
+                const elements = document.querySelectorAll('.shimmer');
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect();
+                    if (position.top < window.innerHeight && position.bottom >= 0) {
+                        element.classList.add('animate');
+                    }
+                });
+            };
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (nav.classList.contains('active')) {
+                        nav.classList.remove('active');
+                        document.body.classList.remove('menu-open');
+                    }
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Initialize animations
+            window.addEventListener('scroll', addShimmerOnScroll);
+            addShimmerOnScroll();
+        });
+    </script>
+</body>
+</html>
